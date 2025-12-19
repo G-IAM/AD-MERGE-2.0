@@ -1,0 +1,9 @@
+$include ./Modules/Declerations/Dec_sets.gms
+$include ./Modules/Declerations/Dec_params.gms
+$include ./Modules/Declerations/Dec_vars_ETA.gms
+$include ./Modules/Declerations/Dec_vars_macro.gms
+$include ./Modules/Declerations/Dec_vars_clim.gms
+$include ./Modules/Declerations/Dec_vars_imp.gms
+$include ./Modules/Declerations/Dec_eqs.gms
+$include ./Modules/Declerations/Dec_dom.gms
+$include ./Modules/Declerations/Dec_others.gms
