@@ -1,0 +1,9 @@
+$include ./Modules/Definitions/Sets/Set_NgW.gms
+$include ./Modules/Definitions/Sets/Set_tp.gms
+$include ./Modules/Definitions/Sets/Set_stoch.gms
+$include ./Modules/Definitions/Sets/Set_macro.gms
+$include ./Modules/Definitions/Sets/Set_tech.gms
+$include ./Modules/Definitions/Sets/Set_rg.gms
+$include ./Modules/Definitions/Sets/Set_ghg.gms
+$include ./Modules/Definitions/Sets/Set_clim.gms
+$include ./Modules/Definitions/Sets/Set_report.gms
