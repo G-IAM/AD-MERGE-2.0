@@ -118,7 +118,8 @@ PARAMETERS
     RLZGDP(tp,*)         REALIZED GDP - TRILLION DOLLARS
     RPTGDP(tp,*)         REALIZED TO POTENTIAL GDP - PERCENT
     TPEGDP(tp,*)         ENERGY-GDP RATIO - EXAJOULES PER TRILLION DOLLARS
-    CARGDP(tp,*)         CARBON PER UNIT OF GDP - GRAMS PER DOLLAR  
+    CARGDP(tp,*)         CARBON PER UNIT OF GDP - GRAMS PER DOLLAR
+    
     SelectedPEL(sw,*,tp,*) SELECTED TECHNOLOGIES FOR ELECTRIC ENERGY - TWH
     WSelectedPEL(sw,tp,*) WORLD SELECTED TECHNOLOGIES FOR ELECTRIC ENERGY - TKWH
     CANSelectedPEL(sw,tp,*) CANADA SELECTED TECHNOLOGIES FOR ELECTRIC ENERGY - TWH
@@ -126,53 +127,74 @@ PARAMETERS
     PELPEAK(sw,*,tp,et)  PRODUCTION OF ELECTRIC ENERGY at PEAK- TKWH
     PELnonPEAK(sw,*,tp,et) PRODUCTION OF ELECTRIC ENERGY at non PEAK- TKWH
     PEPCT(sw,*,tp,et)    PERCENTAGE OF TOTAL ELECTRIC ENERGY
+
     PNL(sw,*,tp,nr)      PRODUCTION OF NONELECTRIC ENERGY - EXAJ
     PHL(sw,*,tp,ht)      PRODUCTION OF Hydrogen ENERGY - PJ
     WPHL(sw,tp,ht)       WORLD PRODUCTION OF Hydrogen ENERGY - EXAJ
     CANPHL(sw,tp,ht)     CANADA PRODUCTION OF Hydrogen ENERGY - PJ
     PNPCT(sw,*,tp,nr)    PERCENTAGE OF TOTAL NONELECTRIC ENERGY
+    
+
     FEU(sw,*,tp,*)       FINAL ENERGY USE - PJ
     WFEU(sw,tp,*)        WORLD FINAL ENERGY USE - EXAJ
+    SEP(sw,*,tp)         SHARE OF ELECTRICITY IN FINAL ENERGY Prod - PERCENT
+    WSEP(sw,tp)          WORLD SHARE OF ELECTRICITY IN FINAL ENERGY Prod - PERCENT
+
     NETX(sw,rg,tp,trd)   NET EXPORTS
+
     SDEIS(sw,tp,rg)      RATIO OF DOMESTIC EIS SUPPLY TO DEMAND
     XABATE(sw,ghg,tp,*)  GREENHOUSE GAS ABATEMENT - BILLION TCE
     XAFF(sw,sy,ps)       AFFORESTATION PROGRAM - FRACTION ADOPTED
     XSINKS(tp,sw)        GLOBAL TOTAL CO2 ABATEMENT - BILLION TONS
+
     XTOTCARB(sw,tp,*)    TOTAL CARBON EMISSIONS - BILLION TONS
     XRATCARB(SW,TP,*)    RATIO OF CARBON EMISSIONS - IEO 2003 TO MERGE PROJECTIONS
+
     ELCARB(SW,TP,*)      ELECTRICITY SECTOR - CARBON EMISSIONS - BILLION TONS
+
     XEM(sw,tp,ghg)       world energy-related emissions - billion tons
-    XEM2(sw,tp,ghg)      world energy-related emissions - billion tons CO2
     REM(sw,tp,rg,ghg)       Regional energy-related emissions - billion tons
+
     XTOTEM(sw,tp,ghg)    total world emissions (energy and non-energy less abatement)
+
     RAD(tp,sw)           RADIATIVE FORCING - WATTS PER SQ M - INCREASE FROM 1750
     PTR(tp,sw)           POTENTIAL GLOBAL TEMPERATURE VALUES - INCREASE FROM 1750
     ATR(tp,sw)           ACTUAL GLOBAL TEMPERATURE VALUES - INCREASE FROM 2000
     ATI(tp,sw)           ACTUAL GLOBAL TEMPERATURE INCREASE -BY PERIOD
     TEMP(sw,tp,tmp)      TEMPERATURE REPORT
+
     RMD(sw,tp,rg)        REPORT ON MD
     RGD(sw,tp,*)         REPORT ON MD PER GDP - percent
     RND(sw,tp,*)         REPORT ON ND PER GDP - percent
     RAvC(sw,tp,*)        REPORT ON avoided cost PER GDP - percent
+    RAvCAD(sw,tp,*)     REPORT ON avoided cost PER Adaptation cost - $ per EJ
     RELF(sw,tp,rg)       REPORT ON ELF
     ECUMI(RG,TP)           unit Mitigation Cost - $ per EJ
     ECT(RG,TP)           Energy Cost 
-    ECGDP(RG,TP)         Energy Cost per GDP 
+    ECGDP(RG,TP)         Energy Cost per GDP
+    
+
 ;
 ECUMI(RG,TP) = (EC.L(rg,tp,"sw1"))/VALUESUM("sw1",rg,tp,"tpe");
 ECT(RG,TP) = (EC.L(rg,tp,"sw1"));
 ECGDP(RG,TP) = (EC.L(rg,tp,"sw1"))/VALUESUM("sw1",rg,tp,"gdp");
+
 RLZGDP(tp,rg)           =  VALUESUM("sw1",rg,tp,"gdp");
 RLZGDP(tp, "world")     =  SUM(rg, VALUESUM("sw1",rg,tp,"gdp"));
+
 RPTGDP(tp,rg)          =   100 * VALUESUM("sw1",rg,tp,"gdp")/POTGDP(tp,rg);
 RPTGDP(tp,"world")     =   100 * SUM(rg, VALUESUM("sw1",rg,tp,"gdp"))/
                                                       POTGDP(tp,"world");
+
 TPEGDP(tp,rg)           =  VALUESUM("sw1",rg,tp,"tpe")/
                            VALUESUM("sw1",rg,tp,"gdp");
+
 TPEGDP(tp,"world")      =  SUM(rg, VALUESUM("sw1",rg,tp,"tpe"))/
                            SUM(rg, VALUESUM("sw1",rg,tp,"gdp"));
+
 CARGDP(tp,rg)           =  1000*        TOTCARB(rg,tp,"sw1")/
                                         VALUESUM("sw1",rg,tp,"gdp");
+
 CARGDP(tp,"world")      =  1000*SUM(rg, TOTCARB(rg,tp,"sw1"))/
                            SUM(rg,      VALUESUM("sw1",rg,tp,"gdp"));
                            
@@ -187,6 +209,8 @@ MD_AD("Resi_MD%",pp,rg)=RD.L(rg,pp,'sw1')*100;
 MD_AD("ReA_AD%",pp,rg)= FAD.L(rg,pp,'sw1')*100;
 MD_AD("ProA_AD%",pp,rg)= IAD.L(rg,pp,'sw1')*100;
 MD_AD("AD%",pp,rg)= (IAD.L(rg,pp,'sw1')+FAD.L(rg,pp,'sw1'))*100;
+
+
 MD_AD("MD",pp,"world")= sum(rg,MD.L(rg,pp,'sw1'));
 MD_AD("Resi_MD",pp,"world")=sum(rg,RD.L(rg,pp,'sw1')*POTGDP(pp,rg)) ;
 MD_AD("ReA_AD",pp,"world")= sum(rg,FAD.L(rg,pp,'sw1')*POTGDP(pp,rg));
@@ -197,31 +221,50 @@ MD_AD("Resi_MD%",pp,"world")= sum(rg,RD.L(rg,pp,'sw1')*POTGDP(pp,rg)) /sum(rg,PO
 MD_AD("ReA_AD%",pp,"world")=  sum(rg,FAD.L(rg,pp,'sw1')*POTGDP(pp,rg))/sum(rg,POTGDP(pp,rg))*100;
 MD_AD("ProA_AD%",pp,"world")= sum(rg,IAD.L(rg,pp,'sw1')*POTGDP(pp,rg))/sum(rg,POTGDP(pp,rg))*100;
 MD_AD("AD%",pp,"world")=      sum(rg,(IAD.L(rg,pp,'sw1')+FAD.L(rg,pp,'sw1'))*POTGDP(pp,rg))/sum(rg,POTGDP(pp,rg))*100;
+
+
 S_CC("ReA_AD",pp,rg)= MD_AD("ReA_AD",pp,rg)/(MD_AD("ReA_AD",pp,rg)+MD_AD("ProA_AD",pp,rg)+MD_AD("Resi_MD",pp,rg))*100;
 S_CC("ProA_AD",pp,rg)= MD_AD("ProA_AD",pp,rg)/(MD_AD("ReA_AD",pp,rg)+MD_AD("ProA_AD",pp,rg)+MD_AD("Resi_MD",pp,rg))*100;
 S_CC("Resi_MD",pp,rg)= MD_AD("Resi_MD",pp,rg)/(MD_AD("ReA_AD",pp,rg)+MD_AD("ProA_AD",pp,rg)+MD_AD("Resi_MD",pp,rg))*100;
+
+
 S_CC("ReA_AD",pp,"world")=  MD_AD("ReA_AD", pp,"world")/(MD_AD("ReA_AD",pp,"world")+MD_AD("ProA_AD",pp,"world")+MD_AD("Resi_MD",pp,"world"))*100;
 S_CC("ProA_AD",pp,"world")= MD_AD("ProA_AD",pp,"world")/(MD_AD("ReA_AD",pp,"world")+MD_AD("ProA_AD",pp,"world")+MD_AD("Resi_MD",pp,"world"))*100;
 S_CC("Resi_MD",pp,"world")= MD_AD("Resi_MD",pp,"world")/(MD_AD("ReA_AD",pp,"world")+MD_AD("ProA_AD",pp,"world")+MD_AD("Resi_MD",pp,"world"))*100;
+
 PEL(sw,rg,tp,et)        =  sum(ts,PE.L(et,tp,ts,rg,sw))
+*$ (PE.L(et,tp,ts,rg,sw) ge .1)
+
 ;
 
 PELPEAK(sw,rg,tp,et)    = PE.L(et,tp,"peak",rg,sw);
+
+
 PELnonPEAK(sw,rg,tp,et)    = PE.L(et,tp,"nonpeak",rg,sw);
+
 PEL(sw,"world",tp,et)   =  SUM ((rg,ts), PE.L(et,tp,ts,rg,sw));
 PELPEAK(sw,"world",tp,et)   =  SUM ((rg), PE.L(et,tp,"peak",rg,sw));
 PELnonPEAK(sw,"world",tp,et)    = SUM ((rg),PE.L(et,tp,"nonpeak",rg,sw));
+
 SelectedPEL(sw,rg,tp,"Coal-CCS")=  (sum(ts,PE.L("coal-a",tp,ts,rg,sw))+sum(ts,PE.L("IGCC",tp,ts,rg,sw)))*1000+0.00000001;
 SelectedPEL(sw,rg,tp,"Coal")=  (sum(ts,PE.L("coal-r",tp,ts,rg,sw))+sum(ts,PE.L("coal-n",tp,ts,rg,sw)))*1000+0.00000001;
+
 SelectedPEL(sw,rg,tp,"Gas-CCS")=  (sum(ts,PE.L("gas-a",tp,ts,rg,sw)))*1000+0.00000001;
 SelectedPEL(sw,rg,tp,"Gas")=  (sum(ts,PE.L("gas-r",tp,ts,rg,sw))+sum(ts,PE.L("gas-n",tp,ts,rg,sw)))*1000+0.00000001;
+
 SelectedPEL(sw,rg,tp,"Oil")=  (sum(ts,PE.L("Oil-r",tp,ts,rg,sw)))*1000+0.00000001;
+
 SelectedPEL(sw,rg,tp,"Wind")=  sum((ts,etwind),PE.L(etwind,tp,ts,rg,sw))*1000+0.00000001;
 SelectedPEL(sw,rg,tp,"Solar")=  sum((ts,etsolar),PE.L(etsolar,tp,ts,rg,sw))*1000+0.00000001;
+
 SelectedPEL(sw,rg,tp,"Storage")=  (sum(ts,PE.L("Storage",tp,ts,rg,sw))+PE.L("Hydro",tp,"peak",rg,sw))*1000+0.00000001;
+
 SelectedPEL(sw,rg,tp,"Hydro")=  (sum(ts,PE.L("Hydro",tp,ts,rg,sw)))*1000+0.00000001;
+
 SelectedPEL(sw,rg,tp,"Nuclear")=  sum(ts,PE.L("nuc",tp,ts,rg,sw))*1000+0.00000001;
+
 SelectedPEL(sw,rg,tp,"Biomass")=  (sum(ts,PE.L("adv-lc",tp,ts,rg,sw))+sum(ts,PE.L("adv-hc",tp,ts,rg,sw)))*1000+0.00000001;
+
 SelectedPEL(sw,"world",tp,"Oil")=sum(rg,SelectedPEL(sw,rg,tp,"Oil"))/1000+0.00000001;;
 SelectedPEL(sw,"world",tp,"Coal-CCS")=sum(rg,SelectedPEL(sw,rg,tp,"Coal-CCS"))/1000+0.00000001;;
 SelectedPEL(sw,"world",tp,"Coal")=sum(rg,SelectedPEL(sw,rg,tp,"Coal"))/1000+0.00000001;;
@@ -233,6 +276,7 @@ SelectedPEL(sw,"world",tp,"Storage")=sum(rg,SelectedPEL(sw,rg,tp,"Storage"))/100
 SelectedPEL(sw,"world",tp,"Hydro")=sum(rg,SelectedPEL(sw,rg,tp,"Hydro"))/1000+0.00000001;
 SelectedPEL(sw,"world",tp,"Nuclear")=sum(rg,SelectedPEL(sw,rg,tp,"Nuclear"))/1000+0.00000001;
 SelectedPEL(sw,"world",tp,"Biomass")=sum(rg,SelectedPEL(sw,rg,tp,"Biomass"))/1000+0.00000001;
+
 WSelectedPEL(sw,tp,"Oil") = SelectedPEL(SW,"world",TP,"Oil") + 0.000000001;
 WSelectedPEL(sw,tp,"Coal-CCS") = SelectedPEL(SW,"world",TP,"Coal-CCS") + 0.000000001;
 WSelectedPEL(sw,tp,"Coal")= SelectedPEL(SW,"world",TP,"Coal") + 0.000000001;
@@ -243,7 +287,8 @@ WSelectedPEL(sw,tp,"Solar") = SelectedPEL(SW,"world",TP,"Solar") + 0.000000001;
 WSelectedPEL(sw,tp,"Storage")= SelectedPEL(SW,"world",TP,"Storage") + 0.000000001;
 WSelectedPEL(sw,tp,"Hydro") = SelectedPEL(SW,"world",TP,"Hydro") + 0.000000001;
 WSelectedPEL(sw,tp,"Nuclear") = SelectedPEL(SW,"world",TP,"Nuclear") + 0.000000001;
-WSelectedPEL(sw,tp,"Biomass") = SelectedPEL(SW,"world",TP,"Biomass") + 0.000000001;               
+WSelectedPEL(sw,tp,"Biomass") = SelectedPEL(SW,"world",TP,"Biomass") + 0.000000001;
+                
 CANSelectedPEL(sw,tp,"Oil") = SelectedPEL(SW,"CAN",TP,"Oil")*1000 + 0.000000001;
 CANSelectedPEL(sw,tp,"Coal-CCS") = SelectedPEL(SW,"CAN",TP,"Coal-CCS")*1000  + 0.000000001;
 CANSelectedPEL(sw,tp,"Coal")= SelectedPEL(SW,"CAN",TP,"Coal")*1000  + 0.000000001;
@@ -255,33 +300,247 @@ CANSelectedPEL(sw,tp,"Storage")= SelectedPEL(SW,"CAN",TP,"Storage")*1000  + 0.00
 CANSelectedPEL(sw,tp,"Hydro") = SelectedPEL(SW,"CAN",TP,"Hydro")*1000  + 0.000000001;
 CANSelectedPEL(sw,tp,"Nuclear") = SelectedPEL(SW,"CAN",TP,"Nuclear")*1000  + 0.000000001;
 CANSelectedPEL(sw,tp,"Biomass") = SelectedPEL(SW,"CAN",TP,"Biomass")*1000  + 0.000000001;
-FEU(sw,rg,tp,"Coal")       =       PN.L("cldu",  tp,rg,sw)*1000 +0.00000001;
-FEU(sw,rg,tp,"Synthetic Fuel")  =  PN.L("synf",  tp,rg,sw)*1000 +0.00000001;
-FEU(sw,rg,tp,"Bioenergy")       =  PN.L("rnew",  tp,rg,sw)*1000+PN.L("neb-hc",tp,rg,sw)*1000+0.00000001 ;
+
+
+SEP(sw,rg,tp,"Coal")       =       PN.L("cldu",  tp,rg,sw)*1000 +0.00000001;
+SEP(sw,rg,tp,"Synthetic Fuel")  =  PN.L("synf",  tp,rg,sw)*1000 +0.00000001;
+SEP(sw,rg,tp,"Bioenergy")       =  PN.L("rnew",  tp,rg,sw)*1000+PN.L("neb-hc",tp,rg,sw)*1000+0.00000001 ;
+SEP(sw,rg,tp,"lbdn")       =       PN.L("lbdn",  tp,rg,sw)*1000 +0.00000001;
+SEP(sw,rg,tp,"Oil Products")    =  OILNON.L(tp,rg,sw)*1000      +0.00000001;
+SEP(sw,rg,tp,"Gas")     =          GASNON.L(tp,rg,sw)*1000      +0.00000001;
+SEP(sw,rg,tp,"Hydrogen")     =     PN.L("H2",  tp,rg,sw)*1000   +0.00000001;
+SEP(sw,rg,tp,"Electricity")     =  VALUESUM("sw1",rg,tp,"ELEC")*3.6*1000+0.00000001 ;
+
+SEP(sw,"WORLD",tp,"coal")          =   sum(rg,SEP(sw,rg,tp,"Coal"))+ 0.000000001 ;
+SEP(sw,"WORLD",tp,"Synthetic Fuel")=   sum(rg,SEP(sw,rg,tp,"Synthetic Fuel")) + 0.000000001;
+SEP(sw,"WORLD",tp,"Bioenergy")       = sum(rg,SEP(sw,rg,tp,"Bioenergy"))+ 0.000000001;
+SEP(sw,"WORLD",tp,"neb-hc")        =   sum(rg,SEP(sw,rg,tp,"neb-hc")) ;
+SEP(sw,"WORLD",tp,"neb-lc")        =   sum(rg,SEP(sw,rg,tp,"neb-lc")) ;
+SEP(sw,"WORLD",tp,"lbdn")          =   sum(rg,SEP(sw,rg,tp,"lbdn"))   ;
+SEP(sw,"WORLD",tp,"Oil Products")  =   sum(rg,SEP(sw,rg,tp,"Oil Products"))+ 0.000000001 ;
+SEP(sw,"WORLD",tp,"Gas")           =   sum(rg,SEP(sw,rg,tp,"Gas"))+ 0.000000001 ;
+SEP(sw,"WORLD",tp,"Hydrogen")      =   sum(rg,SEP(sw,rg,tp,"Hydrogen"))+ 0.000000001 ;
+SEP(sw,"WORLD",tp,"Electricity")   =   sum(rg,SEP(sw,rg,tp,"Electricity")) + 0.000000001;
+
+
+WSEP(sw,tp,"Electricity")   =SEP(sw,"WORLD",tp,"Electricity")/1000+ 0.000000001   ;
+WSEP(sw,tp,"coal")          =SEP(sw,"WORLD",tp,"coal")/1000 + 0.000000001         ;
+WSEP(sw,tp,"Synthetic Fuel")=SEP(sw,"WORLD",tp,"Synthetic Fuel")/1000;
+WSEP(sw,tp,"Bioenergy")     =SEP(sw,"WORLD",tp,"Bioenergy")/1000  + 0.000000001     ;
+WSEP(sw,tp,"neb-hc")        =SEP(sw,"WORLD",tp,"neb-hc") /1000       ;
+WSEP(sw,tp,"neb-lc")        =SEP(sw,"WORLD",tp,"neb-lc") /1000       ;
+WSEP(sw,tp,"lbdn")          =SEP(sw,"WORLD",tp,"lbdn")   /1000       ;
+WSEP(sw,tp,"Oil Products")  =SEP(sw,"WORLD",tp,"Oil Products")/1000+ 0.000000001  ;
+WSEP(sw,tp,"Gas")           =SEP(sw,"WORLD",tp,"Gas") /1000+ 0.000000001          ;
+WSEP(sw,tp,"Hydrogen")      =SEP(sw,"WORLD",tp,"Hydrogen") /1000+ 0.000000001     ;
+
+*Transmission and distribution losses are included in the final energy use calculation.  Because of T&D losses, FEU is less than SEP.
+*Transformation losses are also another factor of difference for coal, gas, hydrogen and oil.
+*Industry own use is not included in the final energy use calculation.
+
+* base year
+Parameter H2IndBase(rg)        "base-year incumbent industrial hydrogen demand";
+Parameter H2Ind(rg,tp)          "incumbent industrial hydrogen demand";
+Parameter gH2Ind(rg,tp);
+
+H2IndBase(rg)=NCAP("H2","2015",rg)*0.95  ;
+H2Ind(rg,"2015") = H2IndBase(rg);
+gH2Ind(nanb,tp)=0.015;
+gH2Ind(nanb,tp)=0.005;
+gH2Ind(anb,tp)=0.005;
+gH2Ind(anb,tp)=0.0;
+
+* recursive update
+loop(tp$(ord(tp)>1),
+    H2Ind(rg,tp) = H2Ind(rg,tp-1) * power(1 + gH2Ind(rg,tp), nyper(tp));
+);
+
+Parameter tdloss(rg) "Electricity transmission and distribution losses (share of grid output)" /
+USA     0.05
+WEUR    0.05
+JSK     0.05
+CAN     0.06
+ANZ     0.06
+OEA     0.08
+RUS     0.09
+China   0.06
+India   0.14
+MEA     0.09
+MEX     0.11
+Africa  0.14
+CLA     0.10
+BRA     0.08
+OAS     0.12
+/;
+Parameter CoalIndOwn(rg) /
+usa    0.000
+weur   0.281
+jsk    0.094
+can    0.000
+anz    0.234
+oea    0.033
+rus    0.035
+china  0.058
+india  0.031
+mea    0.100
+mex    0.000
+africa 0.274
+cla    0.025
+bra    0.016
+oas    0.075
+/;
+
+Parameter CoalTrLoss(rg) /
+usa    0.230
+weur   0.182
+jsk    0.447
+can    0.156
+anz    0.306
+oea    0.255
+rus    0.270
+china  0.183
+india  0.145
+mea    0.389
+mex    0.147
+africa 0.210
+cla    0.227
+bra    0.148
+oas    0.081
+/;
+
+Parameter CoalHeatPl(rg) /
+usa    0.000
+weur   0.095
+jsk    0.000
+can    0.000
+anz    0.000
+oea    0.000
+rus    0.247
+china  0.000
+india  0.000
+mea    0.000
+mex    0.000
+africa 0.000
+cla    0.000
+bra    0.000
+oas    0.000
+/;
+
+
+
+Parameters 
+    trg(rg) "gas transformation"
+    tro(rg) "oil transformation"
+    trbio(rg)
+    ;
+
+trg(rg) = 0.07;
+tro(rg) = 0.03;
+trbio(rg)= 0.1;
+
+Parameter GasIndOwn(rg) /
+usa    0.100
+weur   0.035
+jsk    0.010
+can    0.300
+anz    0.130
+oea    0.080
+rus    0.040
+china  0.100
+india  0.300
+mea    0.100
+mex    0.250
+africa 0.120
+cla    0.200
+bra    0.120
+oas    0.100
+/;
+
+Parameter GasHeatPl(rg) /
+usa    0.000
+weur   0.020
+jsk    0.000
+can    0.000
+anz    0.000
+oea    0.120
+rus    0.110
+china  0.000
+india  0.000
+mea    0.000
+mex    0.000
+africa 0.000
+cla    0.000
+bra    0.000
+oas    0.000
+/;
+
+Parameter OilIndOwn(rg) /
+usa    0.050
+weur   0.040
+jsk    0.060
+can    0.120
+anz    0.100
+oea    0.060
+rus    0.090
+china  0.050
+india  0.100
+mea    0.050
+mex    0.070
+africa 0.050
+cla    0.070
+bra    0.050
+oas    0.050
+/;
+
+Parameter OilHeatPl(rg) /
+usa    0.000
+weur   0.000
+jsk    0.000
+can    0.000
+anz    0.000
+oea    0.020
+rus    0.030
+china  0.000
+india  0.000
+mea    0.000
+mex    0.000
+africa 0.000
+cla    0.000
+bra    0.000
+oas    0.000
+/;
+
+FEU(sw,rg,tp,"Coal")       =       PN.L("cldu",  tp,rg,sw)*1000*(1-coalIndOwn(rg)-coalTrLoss(rg)-coalHeatPl(rg))+0.00000001;
+FEU(sw,rg,tp,"Synthetic Fuel")  =  PN.L("synf",  tp,rg,sw)*1000+0.00000001;
+FEU(sw,rg,tp,"Bioenergy")       =  (PN.L("rnew",  tp,rg,sw)*1000 +PN.L("neb-hc",tp,rg,sw)*1000)*(1-trbio(rg))+0.00000001 ;
 FEU(sw,rg,tp,"lbdn")       =       PN.L("lbdn",  tp,rg,sw)*1000 +0.00000001;
-FEU(sw,rg,tp,"Oil Products")    =  OILNON.L(tp,rg,sw)*1000      +0.00000001;
-FEU(sw,rg,tp,"Gas")     =          GASNON.L(tp,rg,sw)*1000      +0.00000001;
-FEU(sw,rg,tp,"Hydrogen")     =     PN.L("H2",  tp,rg,sw)*1000   +0.00000001;
-FEU(sw,rg,tp,"Electricity")     =  VALUESUM("sw1",rg,tp,"ELEC")*3.6*1000+0.00000001 ;
+FEU(sw,rg,tp,"Oil Products")    =  OILNON.L(tp,rg,sw)*1000*(1-oilIndOwn(rg)-oilHeatPl(rg)-tro(rg))+0.00000001;
+FEU(sw,rg,tp,"Gas")     =          GASNON.L(tp,rg,sw)*1000*(1-gasIndOwn(rg)-gasHeatPl(rg)-trg(rg))+0.00000001;
+FEU(sw,rg,tp,"Hydrogen")     =     PN.L("H2",  tp,rg,sw)*1000 -H2Ind(rg,tp)*1000  +0.00000001;
+FEU(sw,rg,tp,"Electricity")     =  VALUESUM("sw1",rg,tp,"ELEC")*3.6*1000* (1 - tdloss(rg)) +0.00000001 ;
+
 FEU(sw,"WORLD",tp,"coal")          =   sum(rg,FEU(sw,rg,tp,"Coal"))+ 0.000000001 ;
 FEU(sw,"WORLD",tp,"Synthetic Fuel")=   sum(rg,FEU(sw,rg,tp,"Synthetic Fuel")) + 0.000000001;
 FEU(sw,"WORLD",tp,"Bioenergy")       = sum(rg,FEU(sw,rg,tp,"Bioenergy"))+ 0.000000001;
+FEU(sw,"WORLD",tp,"neb-hc")        =   sum(rg,FEU(sw,rg,tp,"neb-hc")) ;
+FEU(sw,"WORLD",tp,"neb-lc")        =   sum(rg,FEU(sw,rg,tp,"neb-lc")) ;
 FEU(sw,"WORLD",tp,"lbdn")          =   sum(rg,FEU(sw,rg,tp,"lbdn"))   ;
 FEU(sw,"WORLD",tp,"Oil Products")  =   sum(rg,FEU(sw,rg,tp,"Oil Products"))+ 0.000000001 ;
 FEU(sw,"WORLD",tp,"Gas")           =   sum(rg,FEU(sw,rg,tp,"Gas"))+ 0.000000001 ;
 FEU(sw,"WORLD",tp,"Hydrogen")      =   sum(rg,FEU(sw,rg,tp,"Hydrogen"))+ 0.000000001 ;
 FEU(sw,"WORLD",tp,"Electricity")   =   sum(rg,FEU(sw,rg,tp,"Electricity")) + 0.000000001;
+
+
 WFEU(sw,tp,"Electricity")   =FEU(sw,"WORLD",tp,"Electricity")/1000+ 0.000000001   ;
 WFEU(sw,tp,"coal")          =FEU(sw,"WORLD",tp,"coal")/1000 + 0.000000001         ;
 WFEU(sw,tp,"Synthetic Fuel")=FEU(sw,"WORLD",tp,"Synthetic Fuel")/1000;
-WFEU(sw,tp,"Bioenergy")       =FEU(sw,"WORLD",tp,"Bioenergy")/1000  + 0.000000001     ;
+WFEU(sw,tp,"Bioenergy")     =FEU(sw,"WORLD",tp,"Bioenergy")/1000  + 0.000000001     ;
 WFEU(sw,tp,"neb-hc")        =FEU(sw,"WORLD",tp,"neb-hc") /1000       ;
 WFEU(sw,tp,"neb-lc")        =FEU(sw,"WORLD",tp,"neb-lc") /1000       ;
 WFEU(sw,tp,"lbdn")          =FEU(sw,"WORLD",tp,"lbdn")   /1000       ;
 WFEU(sw,tp,"Oil Products")  =FEU(sw,"WORLD",tp,"Oil Products")/1000+ 0.000000001  ;
 WFEU(sw,tp,"Gas")           =FEU(sw,"WORLD",tp,"Gas") /1000+ 0.000000001          ;
 WFEU(sw,tp,"Hydrogen")      =FEU(sw,"WORLD",tp,"Hydrogen") /1000+ 0.000000001     ;
-
 PEPCT(sw,rg,tp,et)      =  100*PEL(sw,rg,tp,et) /E.L(rg,tp,sw);
 PEPCT(sw,"world",tp,et) =  100*PEL(sw,"world",tp,et)/
                                         VALUESUM(sw,"world",tp,"elec");                                      
